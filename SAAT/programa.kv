@@ -1,0 +1,130 @@
+#:include Formularios.kv
+#:include TelaConfig.kv
+
+<MDTextField>
+    font_name: app.fonte
+    keyboard_suggestions: True
+
+<MDRaisedButton>
+    font_name: app.fonte
+
+<MDRoundFlatIconButton>
+    font_name: app.fonte
+
+<Texto@MDLabel>
+    font_name: app.fonte
+
+Tela:
+    MDNavigationLayout:
+
+        ScreenManager:
+
+            MDScreen:
+
+                BoxLayout:
+                    orientation: 'vertical'
+
+                    MDToolbar:
+                        title: "SAAT"
+                        elevation: 10
+                        left_action_items: [['menu', lambda x: nav_drawer.set_state("open")]]
+
+                    ScreenManager:
+                        id: Gerenciador
+
+                        MDScreen:
+                            name: "tela1"
+
+                            MDFloatLayout:
+                                canvas:
+                                    Color:
+                                        rgba: .3,.7,.2,1
+                                    Rectangle:
+                                        size: self.size
+                                        pos: self.pos
+
+                                Texto:
+                                    id: label
+                                    pos_hint: {"top":1}
+                                    halign: "center"
+                                    text: "Helows"
+
+                        #TelaConfig:
+                            #name: "telaconfig"
+
+                        #Formulario:
+                            #name: "Adicionar Tarefa"
+
+
+
+
+        MDNavigationDrawer:
+            id: nav_drawer
+
+            ScrollView:
+
+                MDList:
+
+                    OneLineIconListItem:
+                        text: "Tela inicial"
+
+                        on_press:
+                            root.ids.Gerenciador.current = "tela1"
+
+                        on_release:
+                            nav_drawer.set_state("close")
+
+                        IconLeftWidget:
+                            icon: "home"
+
+                            on_press:
+                                root.ids.Gerenciador.current = "tela1"
+
+                            on_release:
+                                nav_drawer.set_state("close")
+
+
+                    OneLineIconListItem:
+                        text: "Adicionar tarefa"
+
+                        on_press:
+                            app.transAT(Gerenciador) # Transita para a tela de Adicionar Tarefas
+                            #root.ids.Gerenciador.current = "Adicionar Tarefa"
+
+
+
+                        on_release:
+                            nav_drawer.set_state("close")
+
+
+                        IconLeftWidget:
+                            icon: "notebook-plus"
+
+                            on_press:
+                                app.transAT(Gerenciador)
+                                #root.ids.Gerenciador.current = "Adicionar Tarefa"
+
+                            on_release:
+                                nav_drawer.set_state("close")
+
+                    OneLineIconListItem:
+                        text: "Configurações"
+
+                        on_press:
+                            app.transCFG(Gerenciador) # Transita para a tela de Configurações
+                            #root.ids.Gerenciador.current = "telaconfig"
+
+                        on_release:
+                            nav_drawer.set_state("close")
+
+                        IconLeftWidget:
+                            icon:"cog"
+
+                            on_press:
+                                app.transCFG(Gerenciador)
+                                #root.ids.Gerenciador.current = "telaconfig"
+
+                            on_release:
+                                nav_drawer.set_state("close")
+
+<Tela@MDScreen>

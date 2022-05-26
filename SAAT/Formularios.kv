@@ -1,0 +1,224 @@
+#:import ku kivy.utils.get_color_from_hex
+#:import Clock kivy.clock.Clock
+
+<Subtarefa>
+    size_hint_y: None
+    height: dp(330)
+
+    Box:
+        id: boxcor1
+        size_hint_x: .8
+        pos_hint: {"center_x": .5}
+        cor: ku("#f2f2f2")
+
+    Campo_Texto:
+        id: field
+        hint_text: "Nome da subtarefa"
+        size_hint_x: .74
+        pos_hint: {"center_x": .5}
+        y : dp(220)
+        max_text_length: 35
+
+    MDRoundFlatIconButton:
+        id: btn
+        icon: "note-plus"
+        text: "Nova subtarefa"
+        pos_hint: {"center_x": .7}
+        font_size: sp(10)
+        #font_style: "Overline"
+        y: dp(54)
+        on_release:
+            root.height += dp(120)
+            field.y += dp(120)
+            root.add_field()
+
+
+    MDRoundFlatIconButton:
+        icon: "close"
+        text: "Remover subtarefa"
+        pos_hint: {"center_x": .32}
+        font_size: sp(10)
+        y: dp(54)
+        on_release:
+            if root.height > dp(330): field.y -= dp(120)
+            if root.height > dp(330): root.height -= dp(120)
+
+            root.rem_field()
+
+<Box>
+    canvas.before:
+        Color:
+            rgba: self.cor
+
+        RoundedRectangle:
+            radius: [20]
+            size: self.size
+            pos: self.pos
+
+<Formulario>
+    #on_leave: date.text = ""
+    on_kv_post:
+        self.postkv(app)
+    ScrollView:
+        MDBoxLayout:
+            id: boxl
+            orientation: "vertical"
+            size_hint_y: None
+            height: self.minimum_height
+            MDFloatLayout:
+                id: boxfilho
+                size_hint_y: None
+                height: dp(920)
+                Box:
+                    id: boxcor
+                    size_hint: .8, .94
+                    pos_hint: {"center_x": .5, "center_y": .46}
+                Box:
+                    id: nome
+                    size_hint: .69, .085
+                    pos_hint: {"center_x": .5, "center_y": .87}
+
+
+                Campo_Texto:
+                    id: nometarefa
+                    #line_anim: True
+                    hint_text: "Nome da tarefa"
+                    pos_hint: {"center_x": .5, "center_y": .87}
+                    size_hint_x: .69
+                    max_text_length: 35
+
+
+                Texto:
+                    text: "Importância:"
+                    size_hint: .47, .08
+                    pos_hint: {"center_x": .4, "center_y": .78}
+
+
+                MDDropDownItem:
+                    id: drop_item
+                    pos_hint: {'center_x': .48, 'center_y': .78}
+                    text: '3'
+                    on_release:
+                        root.menu.open()
+
+
+                MDIconButton:
+                    pos_hint: {"center_x": .18, "center_y": .69}
+                    icon: "clipboard-edit"
+                    on_release:
+                        root.ids.slider.value = 1
+                MDSlider:
+                    id: slider
+                    size_hint: .5, .08
+                    pos_hint: {"center_x": .45, "center_y": .69}
+                    min: 1
+                    max: 10
+                    value: 3
+                    on_touch_up:
+                        root.ids.drop_item.set_item("%.f" %self.value)
+
+                MDIconButton:
+                    pos_hint: {"center_x": .72, "center_y": .69}
+                    icon: "clipboard-alert"
+                    on_release:
+                        root.ids.slider.value = 10
+
+                Texto:
+                    id: labeltem
+                    text: "Início:"
+                    size_hint: .4, .1
+                    pos_hint: {"center_x": .37, "center_y": .6}
+
+                MDRaisedButton:
+                    text: "Abrir Relógio"
+                    pos_hint: {'center_x': .43, 'center_y': .53}
+                    on_release: root.show_time_picker()
+
+                Texto:
+                    id: labeltem1
+                    text: "Fim:"
+                    size_hint: .4, .1
+                    pos_hint: {"center_x": .37, "center_y": .46}
+
+                MDRaisedButton:
+                    text: "Abrir Relógio"
+                    pos_hint: {'center_x': .43, 'center_y': .39}
+                    on_release: root.show_time_picker1()
+
+                Texto:
+                    text: "Duração:"
+                    size_hint: .4, .1
+                    pos_hint: {"center_x": .37, "center_y": .32}
+
+                Box:
+                    id: nome1
+                    size_hint: .20, .07
+                    pos_hint: {"center_x": .43, "center_y": .25}
+
+                Campo_Texto:
+                    input_type: "number"
+                    input_filter: "int"
+                    id: tempo1
+                    hint_text: "HR"
+                    size_hint_x: .047
+                    max_text_length: 2
+                    pos_hint: {"center_x": .38, "center_y": .26}
+
+                Texto:
+                    text: ":"
+                    size_hint: .02, .1
+                    pos_hint: {"center_x": .44, "center_y": .25}
+
+                Campo_Texto:
+                    input_type: "number"
+                    input_filter: "int"
+                    id: tempo2
+                    hint_text: "MN"
+                    size_hint_x: .047
+                    max_text_length: 2
+                    pos_hint: {"center_x": .47, "center_y": .26}
+
+                Texto:
+                    id: data
+                    text: "Data:"
+                    size_hint: .4, .1
+                    pos_hint: {"center_x": .37, "center_y": .18}
+
+                MDRaisedButton:
+                    text: "Abrir Calendário"
+                    pos_hint: {'center_x': .43, 'center_y': .11}
+                    on_release: root.open()
+
+                MDCheckbox:
+                    size_hint: None,None
+                    height: dp(32)
+                    width: dp(32)
+                    on_release:
+                        root.addWidget(app)
+                    pos_hint: {"center_x": .182, "center_y": .04}
+
+                Texto:
+                    text: "Adicionar Subtarefas"
+                    halign: "center"
+                    pos_hint: {"center_x": .42, "center_y": .04}
+
+
+            Texto:
+                size_hint_y: None
+                height: dp(80)
+
+
+    MDIconButton:
+        icon: "check"
+        pos_hint: {"center_x": .88,"y": .88}
+        on_release:
+            root.adicionarbd()
+
+    MDIconButton:
+        icon: "window-close"
+        pos_hint: {"center_x": .12,"y": .88}
+        on_release:
+            app.root.ids.Gerenciador.current = "tela1"
+            app.root.ids.Gerenciador.remove_widget(app.form)
+            Clock.schedule_once(app.addForm, 1/2)
+
